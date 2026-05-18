@@ -71,7 +71,7 @@ function Page() {
       <CTABanner
         title="Validate the Setup Before Committing"
         body="A paid pilot keeps the engagement focused and professional from day one."
-        primary={{ to: "/contact", label: "Book a Discovery Call" }}
+        primary={{ to: "/book-discovery", label: "Book a Discovery Call" }}
       />
     </>
   );

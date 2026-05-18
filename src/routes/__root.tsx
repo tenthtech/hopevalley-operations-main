@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -12,6 +13,8 @@ import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SkipToContent } from "@/components/SkipToContent";
+import { MobileStickyCTA } from "@/components/MobileStickyCTA";
+import { siteJsonLd } from "@/lib/schema";
 import { SITE_NAME } from "@/lib/seo";
 
 function NotFoundComponent() {
@@ -24,7 +27,9 @@ function NotFoundComponent() {
           The page you're looking for doesn't exist or has been moved.
         </p>
         <div className="mt-6">
-          <Link to="/" className="btn-primary">Go home</Link>
+          <Link to="/" className="btn-primary">
+            Go home
+          </Link>
         </div>
       </div>
     </div>
@@ -42,10 +47,18 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
           Try refreshing the page. If the problem continues, head back home and try again later.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button onClick={() => { router.invalidate(); reset(); }} className="btn-primary">
+          <button
+            onClick={() => {
+              router.invalidate();
+              reset();
+            }}
+            className="btn-primary"
+          >
             Try again
           </button>
-          <a href="/" className="btn-ghost">Go home</a>
+          <a href="/" className="btn-ghost">
+            Go home
+          </a>
         </div>
       </div>
     </div>
@@ -61,10 +74,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "HopeValley Operations helps businesses scale customer support, outbound sales, and back-office workflows through EU-managed remote teams, with optional AI-assisted coverage where it fits.",
+          "hopeValley BPO helps businesses scale customer support, outbound sales, and back-office workflows through EU-managed remote teams, with optional AI-assisted coverage where it fits.",
       },
-      { name: "author", content: "HopeValley Operations" },
-      { property: "og:site_name", content: "HopeValley Operations" },
+      { name: "author", content: "hopeValley BPO" },
+      { property: "og:site_name", content: "hopeValley BPO" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#0d1b2a" },
@@ -73,8 +86,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" },
-      { rel: "icon", href: "/favicon.ico" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap",
+      },
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
+      { rel: "apple-touch-icon", href: "/favicon.png" },
     ],
   }),
   shellComponent: RootShell,
@@ -86,7 +103,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <head><HeadContent /></head>
+      <head>
+        <HeadContent />
+      </head>
       <body>
         {children}
         <Scripts />
@@ -97,15 +116,21 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const { location } = useRouterState();
   return (
     <QueryClientProvider client={queryClient}>
       <SkipToContent />
-      <div className="min-h-screen flex flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd(location.pathname)) }}
+      />
+      <div className="min-h-screen flex flex-col pb-20 md:pb-0">
         <SiteHeader />
         <main id="main-content" className="flex-1" tabIndex={-1}>
           <Outlet />
         </main>
         <SiteFooter />
+        <MobileStickyCTA />
       </div>
     </QueryClientProvider>
   );

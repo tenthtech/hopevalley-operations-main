@@ -89,7 +89,7 @@
     color: var(--color-foreground);
     font-feature-settings: "ss01", "cv11";
   }
-  h1,h2,h3,h4 { letter-spacing: -0.02em; }
+  h1,h2,h3,h4 { letter-spacing: 0; }
   ::selection { background: color-mix(in oklab, var(--primary) 35%, transparent); color: white; }
 }
 
@@ -100,7 +100,7 @@
   .glass-card {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: var(--radius-xl);
+    border-radius: 8px;
     transition: background .25s ease, transform .25s ease, border-color .25s ease;
   }
   .glass-card:hover { background: var(--card-hover); border-color: rgba(255,255,255,0.16); }
@@ -124,9 +124,10 @@
 
   .label-chip {
     display: inline-flex; align-items: center; gap: .5rem;
+    max-width: 100%; line-height: 1.2;
     padding: .375rem .75rem; border-radius: 9999px;
     border: 1px solid var(--border); background: rgba(27,198,90,0.08);
-    color: var(--primary); font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--primary); font-size: .75rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
   }
   .label-chip.alert { background: rgba(226,54,54,0.10); color: var(--problem); border-color: rgba(226,54,54,0.25); }
 
@@ -141,5 +142,20 @@
       linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
     background-size: 48px 48px;
+  }
+
+  .prose-legal {
+    max-width: 780px;
+  }
+  .prose-legal h2 {
+    margin-top: 2rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+  .prose-legal h2:first-child { margin-top: 0; }
+  .prose-legal p {
+    margin-top: .75rem;
+    color: var(--soft);
+    line-height: 1.7;
   }
 }

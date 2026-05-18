@@ -9,16 +9,30 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as SalesOutreachRouteImport } from './routes/sales-outreach'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PilotProgramRouteImport } from './routes/pilot-program'
+import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as CustomerSupportRouteImport } from './routes/customer-support'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CaseStudiesRouteImport } from './routes/case-studies'
+import { Route as BookDiscoveryRouteImport } from './routes/book-discovery'
+import { Route as BlogRouteImport } from './routes/blog'
 import { Route as BackOfficeOperationsRouteImport } from './routes/back-office-operations'
 import { Route as AiHumanSupportRouteImport } from './routes/ai-human-support'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as ApiContactRouteImport } from './routes/api.contact'
 
+const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
+  id: '/terms-of-service',
+  path: '/terms-of-service',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
@@ -27,6 +41,11 @@ const ServicesRoute = ServicesRouteImport.update({
 const SalesOutreachRoute = SalesOutreachRouteImport.update({
   id: '/sales-outreach',
   path: '/sales-outreach',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PricingRoute = PricingRouteImport.update({
@@ -39,6 +58,11 @@ const PilotProgramRoute = PilotProgramRouteImport.update({
   path: '/pilot-program',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FaqsRoute = FaqsRouteImport.update({
+  id: '/faqs',
+  path: '/faqs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CustomerSupportRoute = CustomerSupportRouteImport.update({
   id: '/customer-support',
   path: '/customer-support',
@@ -47,6 +71,21 @@ const CustomerSupportRoute = CustomerSupportRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CaseStudiesRoute = CaseStudiesRouteImport.update({
+  id: '/case-studies',
+  path: '/case-studies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookDiscoveryRoute = BookDiscoveryRouteImport.update({
+  id: '/book-discovery',
+  path: '/book-discovery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BackOfficeOperationsRoute = BackOfficeOperationsRouteImport.update({
@@ -59,96 +98,180 @@ const AiHumanSupportRoute = AiHumanSupportRouteImport.update({
   path: '/ai-human-support',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
+} as any)
+const ApiContactRoute = ApiContactRouteImport.update({
+  id: '/api/contact',
+  path: '/api/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/ai-human-support': typeof AiHumanSupportRoute
   '/back-office-operations': typeof BackOfficeOperationsRoute
+  '/blog': typeof BlogRouteWithChildren
+  '/book-discovery': typeof BookDiscoveryRoute
+  '/case-studies': typeof CaseStudiesRoute
   '/contact': typeof ContactRoute
   '/customer-support': typeof CustomerSupportRoute
+  '/faqs': typeof FaqsRoute
   '/pilot-program': typeof PilotProgramRoute
   '/pricing': typeof PricingRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/sales-outreach': typeof SalesOutreachRoute
   '/services': typeof ServicesRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
+  '/api/contact': typeof ApiContactRoute
+  '/blog/$slug': typeof BlogSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/ai-human-support': typeof AiHumanSupportRoute
   '/back-office-operations': typeof BackOfficeOperationsRoute
+  '/blog': typeof BlogRouteWithChildren
+  '/book-discovery': typeof BookDiscoveryRoute
+  '/case-studies': typeof CaseStudiesRoute
   '/contact': typeof ContactRoute
   '/customer-support': typeof CustomerSupportRoute
+  '/faqs': typeof FaqsRoute
   '/pilot-program': typeof PilotProgramRoute
   '/pricing': typeof PricingRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/sales-outreach': typeof SalesOutreachRoute
   '/services': typeof ServicesRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
+  '/api/contact': typeof ApiContactRoute
+  '/blog/$slug': typeof BlogSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/ai-human-support': typeof AiHumanSupportRoute
   '/back-office-operations': typeof BackOfficeOperationsRoute
+  '/blog': typeof BlogRouteWithChildren
+  '/book-discovery': typeof BookDiscoveryRoute
+  '/case-studies': typeof CaseStudiesRoute
   '/contact': typeof ContactRoute
   '/customer-support': typeof CustomerSupportRoute
+  '/faqs': typeof FaqsRoute
   '/pilot-program': typeof PilotProgramRoute
   '/pricing': typeof PricingRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/sales-outreach': typeof SalesOutreachRoute
   '/services': typeof ServicesRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
+  '/api/contact': typeof ApiContactRoute
+  '/blog/$slug': typeof BlogSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/ai-human-support'
     | '/back-office-operations'
+    | '/blog'
+    | '/book-discovery'
+    | '/case-studies'
     | '/contact'
     | '/customer-support'
+    | '/faqs'
     | '/pilot-program'
     | '/pricing'
+    | '/privacy-policy'
     | '/sales-outreach'
     | '/services'
+    | '/terms-of-service'
+    | '/api/contact'
+    | '/blog/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/ai-human-support'
     | '/back-office-operations'
+    | '/blog'
+    | '/book-discovery'
+    | '/case-studies'
     | '/contact'
     | '/customer-support'
+    | '/faqs'
     | '/pilot-program'
     | '/pricing'
+    | '/privacy-policy'
     | '/sales-outreach'
     | '/services'
+    | '/terms-of-service'
+    | '/api/contact'
+    | '/blog/$slug'
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/ai-human-support'
     | '/back-office-operations'
+    | '/blog'
+    | '/book-discovery'
+    | '/case-studies'
     | '/contact'
     | '/customer-support'
+    | '/faqs'
     | '/pilot-program'
     | '/pricing'
+    | '/privacy-policy'
     | '/sales-outreach'
     | '/services'
+    | '/terms-of-service'
+    | '/api/contact'
+    | '/blog/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   AiHumanSupportRoute: typeof AiHumanSupportRoute
   BackOfficeOperationsRoute: typeof BackOfficeOperationsRoute
+  BlogRoute: typeof BlogRouteWithChildren
+  BookDiscoveryRoute: typeof BookDiscoveryRoute
+  CaseStudiesRoute: typeof CaseStudiesRoute
   ContactRoute: typeof ContactRoute
   CustomerSupportRoute: typeof CustomerSupportRoute
+  FaqsRoute: typeof FaqsRoute
   PilotProgramRoute: typeof PilotProgramRoute
   PricingRoute: typeof PricingRoute
+  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   SalesOutreachRoute: typeof SalesOutreachRoute
   ServicesRoute: typeof ServicesRoute
+  TermsOfServiceRoute: typeof TermsOfServiceRoute
+  ApiContactRoute: typeof ApiContactRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/terms-of-service': {
+      id: '/terms-of-service'
+      path: '/terms-of-service'
+      fullPath: '/terms-of-service'
+      preLoaderRoute: typeof TermsOfServiceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services': {
       id: '/services'
       path: '/services'
@@ -161,6 +284,13 @@ declare module '@tanstack/react-router' {
       path: '/sales-outreach'
       fullPath: '/sales-outreach'
       preLoaderRoute: typeof SalesOutreachRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pricing': {
@@ -177,6 +307,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PilotProgramRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/faqs': {
+      id: '/faqs'
+      path: '/faqs'
+      fullPath: '/faqs'
+      preLoaderRoute: typeof FaqsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/customer-support': {
       id: '/customer-support'
       path: '/customer-support'
@@ -189,6 +326,27 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/case-studies': {
+      id: '/case-studies'
+      path: '/case-studies'
+      fullPath: '/case-studies'
+      preLoaderRoute: typeof CaseStudiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/book-discovery': {
+      id: '/book-discovery'
+      path: '/book-discovery'
+      fullPath: '/book-discovery'
+      preLoaderRoute: typeof BookDiscoveryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/back-office-operations': {
@@ -205,6 +363,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AiHumanSupportRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -212,20 +377,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
+    }
+    '/api/contact': {
+      id: '/api/contact'
+      path: '/api/contact'
+      fullPath: '/api/contact'
+      preLoaderRoute: typeof ApiContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface BlogRouteChildren {
+  BlogSlugRoute: typeof BlogSlugRoute
+}
+
+const BlogRouteChildren: BlogRouteChildren = {
+  BlogSlugRoute: BlogSlugRoute,
+}
+
+const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   AiHumanSupportRoute: AiHumanSupportRoute,
   BackOfficeOperationsRoute: BackOfficeOperationsRoute,
+  BlogRoute: BlogRouteWithChildren,
+  BookDiscoveryRoute: BookDiscoveryRoute,
+  CaseStudiesRoute: CaseStudiesRoute,
   ContactRoute: ContactRoute,
   CustomerSupportRoute: CustomerSupportRoute,
+  FaqsRoute: FaqsRoute,
   PilotProgramRoute: PilotProgramRoute,
   PricingRoute: PricingRoute,
+  PrivacyPolicyRoute: PrivacyPolicyRoute,
   SalesOutreachRoute: SalesOutreachRoute,
   ServicesRoute: ServicesRoute,
+  TermsOfServiceRoute: TermsOfServiceRoute,
+  ApiContactRoute: ApiContactRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

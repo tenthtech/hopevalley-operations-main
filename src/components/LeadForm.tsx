@@ -2,47 +2,75 @@ import { useState } from "react";
 import { z } from "zod";
 
 /* =============================================================================
- * GoHighLevel (GHL) — WEBHOOK / FORM INTEGRATION PLACEHOLDER
+ * GoHighLevel (GHL) - WEBHOOK / FORM INTEGRATION PLACEHOLDER
  * -----------------------------------------------------------------------------
- * Wire this form to GoHighLevel using ONE of:
+ * Wire this form to GoHighLevel using one of:
  *   1) Inbound webhook: POST JSON to your GHL workflow webhook URL
- *   2) Embedded GHL form: replace the <form> below with GHL’s iframe embed
+ *   2) Embedded GHL form: replace the <form> below with GHL's iframe embed
  *   3) GHL API: server-side create/update contact (do not expose API keys in the browser)
  *
- * Typical env var name: VITE_GHL_WEBHOOK_URL (set in your host / Cloudflare Pages)
- * Replace submitToGHL() body with fetch(VITE_GHL_WEBHOOK_URL, { method: "POST", ... })
+ * Optional env var: VITE_CONTACT_FORM_ENDPOINT can override the default email endpoint.
+ * The default recipient is jude@hopevalley.digital.
  *
  * Note: browser POSTs to third-party webhooks often hit CORS restrictions. If that happens,
  * prefer posting to your own API route (TanStack Start server handler) and forward server-to-server to GHL.
- * Pipeline reference (GHL): New Lead → Contacted → Discovery Booked → … → Converted Client
+ * Pipeline reference (GHL): New Lead -> Contacted -> Discovery Booked -> Converted Client
  * ============================================================================= */
 
-const GHL_WEBHOOK_URL = import.meta.env.VITE_GHL_WEBHOOK_URL as string | undefined;
+const CONTACT_FORM_RECIPIENT = "jude@hopevalley.digital or bpo@hopevalley.digital";
+const CONTACT_FORM_ENDPOINT =
+  (import.meta.env.VITE_CONTACT_FORM_ENDPOINT as string | undefined) ??
+  "/api/contact";
 
-async function submitToGHL(payload: Record<string, unknown>) {
-  // --- GHL: replace this stub with your webhook POST ---
-  if (GHL_WEBHOOK_URL) {
-    await fetch(GHL_WEBHOOK_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    return { ok: true };
+async function submitContactForm(payload: Record<string, unknown>) {
+  const response = await fetch(CONTACT_FORM_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      _subject: "New website contact form submission",
+      _template: "table",
+      _captcha: "false",
+      recipient: CONTACT_FORM_RECIPIENT,
+      submittedAt: new Date().toISOString(),
+      ...payload,
+    }),
+  });
+
+  if (!response.ok) {
+    const body = (await response.json().catch(() => null)) as { message?: string } | null;
+    throw new Error(body?.message ?? `Contact form submission failed with ${response.status}`);
   }
-  await new Promise((r) => setTimeout(r, 700));
+
   return { ok: true };
+}
+
+function leadTags(data: { service: string; coverage: string }, source: string) {
+  const tags = new Set(["website-lead"]);
+  if (source.includes("pilot")) tags.add("pilot-request");
+  if (source.includes("pricing")) tags.add("pricing-inquiry");
+  if (data.service === "Customer Support") tags.add("customer-support");
+  if (data.service === "Sales & Outreach") tags.add("sales-outreach");
+  if (data.service === "Back Office Operations") tags.add("back-office");
+  if (data.service === "AI + Human Support") tags.add("ai-human-support");
+  if (data.service === "24/5 or 24/6 Coverage") tags.add("24-5-support");
+  if (data.coverage === "24/5") tags.add("24-5-support");
+  if (data.coverage === "24/7") tags.add("24-7-support");
+  return Array.from(tags);
 }
 
 const schema = z.object({
   fullName: z.string().trim().min(2, "Please enter your name").max(100),
   email: z.string().trim().email("Enter a valid email").max(255),
   company: z.string().trim().min(1, "Company is required").max(120),
-  website: z.string().trim().max(200).optional().or(z.literal("")),
+  website: z.string().trim().min(1, "Website is required").max(200),
   service: z.string().min(1, "Please select a service"),
-  teamSize: z.string().max(60).optional().or(z.literal("")),
-  tools: z.string().max(200).optional().or(z.literal("")),
+  teamSize: z.string().trim().min(1, "Team size is required").max(60),
+  tools: z.string().trim().min(1, "Current tools or CRM is required").max(200),
   coverage: z.string().min(1, "Please select coverage"),
-  message: z.string().trim().max(1500).optional().or(z.literal("")),
+  message: z.string().trim().min(1, "Message is required").max(1500),
 });
 
 const SERVICES = [
@@ -58,11 +86,14 @@ const COVERAGE = ["Business Hours", "Extended Hours", "24/5", "24/6", "24/7", "P
 export function LeadForm({
   submitLabel = "Request Consultation",
   source = "contact",
+  defaultService = "",
 }: {
   submitLabel?: string;
   source?: string;
+  defaultService?: string;
 }) {
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [formError, setFormError] = useState("");
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
 
@@ -78,10 +109,16 @@ export function LeadForm({
       return;
     }
     setErrors({});
+    setFormError("");
     setLoading(true);
     try {
-      await submitToGHL({ ...parsed.data, source });
+      await submitContactForm({ ...parsed.data, source, tags: leadTags(parsed.data, source) });
       setDone(true);
+    } catch (error) {
+      console.error(error);
+      setFormError(
+        `We could not send your request right now. Please email ${CONTACT_FORM_RECIPIENT} directly.`,
+      );
     } finally {
       setLoading(false);
     }
@@ -91,7 +128,7 @@ export function LeadForm({
     return (
       <div className="glass-card p-8 text-center" role="status" aria-live="polite">
         <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full bg-primary/15 text-xl text-primary" aria-hidden>
-          ✓
+          OK
         </div>
         <h2 className="text-xl font-semibold">Thank you. Your request has been received.</h2>
         <p className="mt-3 text-soft">Our team will review your requirements and get back to you shortly.</p>
@@ -134,16 +171,17 @@ export function LeadForm({
             error={errors.company}
             required
           />
-          <Field label="Website" name="website" placeholder="https://" autoComplete="url" error={errors.website} />
+          <Field label="Website" name="website" placeholder="https://" autoComplete="url" error={errors.website} required />
         </Row>
         <Row>
-          <Select label="Service Required" name="service" options={SERVICES} error={errors.service} required />
+          <Select label="Service Required" name="service" options={SERVICES} error={errors.service} required defaultValue={defaultService} />
           <Field
             label="Team Size Needed"
             name="teamSize"
-            placeholder="e.g. 1–3 agents"
+            placeholder="e.g. 1-3 agents"
             error={errors.teamSize}
             autoComplete="off"
+            required
           />
         </Row>
         <Row>
@@ -153,20 +191,30 @@ export function LeadForm({
             placeholder="e.g. HubSpot, Zendesk"
             error={errors.tools}
             autoComplete="off"
+            required
           />
           <Select label="Preferred Coverage" name="coverage" options={COVERAGE} error={errors.coverage} required />
         </Row>
         <div className="grid gap-2">
           <label className="text-sm font-medium" htmlFor="message">
             Message
+            <span className="text-primary"> *</span>
           </label>
           <textarea
             id="message"
             name="message"
             rows={4}
+            required
+            aria-invalid={errors.message ? true : undefined}
+            aria-describedby={errors.message ? "message-error" : undefined}
             className="rounded-xl border border-border bg-surface px-4 py-3 text-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none"
             placeholder="Tell us about your goals, current challenges, or workflows."
           />
+          {errors.message && (
+            <span id="message-error" className="text-xs text-problem" role="alert">
+              {errors.message}
+            </span>
+          )}
         </div>
       </fieldset>
 
@@ -175,9 +223,14 @@ export function LeadForm({
           We usually recommend starting with a pilot before moving into a full monthly setup.
         </p>
         <button type="submit" disabled={loading} className="btn-primary shrink-0 disabled:opacity-60">
-          {loading ? "Sending…" : submitLabel}
+          {loading ? "Sending..." : submitLabel}
         </button>
       </div>
+      {formError && (
+        <p className="text-sm text-problem" role="alert">
+          {formError}
+        </p>
+      )}
     </form>
   );
 }
@@ -235,12 +288,14 @@ function Select({
   options,
   error,
   required,
+  defaultValue = "",
 }: {
   label: string;
   name: string;
   options: string[];
   error?: string;
   required?: boolean;
+  defaultValue?: string;
 }) {
   const errId = error ? `${name}-error` : undefined;
   return (
@@ -252,13 +307,13 @@ function Select({
       <select
         id={name}
         name={name}
-        defaultValue=""
+        defaultValue={defaultValue}
         aria-invalid={error ? true : undefined}
         aria-describedby={errId}
         className="rounded-xl border border-border bg-surface px-4 py-3 text-sm focus:border-primary focus:outline-none"
       >
         <option value="" disabled>
-          Select…
+          Select...
         </option>
         {options.map((o) => (
           <option key={o} value={o}>

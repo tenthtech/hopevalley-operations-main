@@ -1,4 +1,4 @@
-export const SITE_NAME = "HopeValley Operations";
+export const SITE_NAME = "hopeValley BPO";
 
 export function brandedTitle(pageTitle: string) {
   return `${pageTitle} | ${SITE_NAME}`;

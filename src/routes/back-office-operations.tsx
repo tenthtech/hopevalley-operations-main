@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CheckList, CTABanner, PageHero } from "@/components/ui-blocks";
 import { pageSeo } from "@/lib/seo";
+import { ServiceInquiry } from "@/components/ServiceInquiry";
 
 export const Route = createFileRoute("/back-office-operations")({
   head: () =>
@@ -51,6 +52,8 @@ function Page() {
         primary={{ to: "/contact", label: "Discuss Back Office Support" }}
         secondary={{ to: "/pilot-program", label: "Start a Pilot" }}
       />
+
+      <ServiceInquiry service="Back Office Operations" source="service-back-office" title="Request Back Office Inquiry" />
     </>
   );
 }

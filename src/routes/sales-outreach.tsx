@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CheckList, CTABanner, PageHero, SectionHeader } from "@/components/ui-blocks";
 import { pageSeo } from "@/lib/seo";
+import { ServiceInquiry } from "@/components/ServiceInquiry";
 
 export const Route = createFileRoute("/sales-outreach")({
   head: () =>
@@ -65,8 +66,10 @@ function Page() {
         title="Ready to launch outbound activity?"
         body="Start with a paid pilot and validate communication, scripts, and pipeline fit."
         primary={{ to: "/pilot-program", label: "Start an Outreach Pilot" }}
-        secondary={{ to: "/contact", label: "Book a Discovery Call" }}
+        secondary={{ to: "/book-discovery", label: "Book a Discovery Call" }}
       />
+
+      <ServiceInquiry service="Sales & Outreach" source="service-sales-outreach" title="Request Sales Outreach Inquiry" />
     </>
   );
 }

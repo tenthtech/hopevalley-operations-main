@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CheckList, CTABanner, FeatureCard, PageHero, SectionHeader } from "@/components/ui-blocks";
 import { Phone, Mail, MessageSquare, Ticket, Database, Bot } from "lucide-react";
 import { pageSeo } from "@/lib/seo";
+import { ServiceInquiry } from "@/components/ServiceInquiry";
 
 export const Route = createFileRoute("/customer-support")({
   head: () =>
@@ -78,8 +79,10 @@ function Page() {
         title="Need Reliable Support Coverage?"
         body="Start with a controlled pilot and test the workflow before scaling."
         primary={{ to: "/pilot-program", label: "Request Support Pilot" }}
-        secondary={{ to: "/contact", label: "Book a Discovery Call" }}
+        secondary={{ to: "/book-discovery", label: "Book a Discovery Call" }}
       />
+
+      <ServiceInquiry service="Customer Support" source="service-customer-support" title="Request Customer Support Inquiry" />
     </>
   );
 }
