@@ -89,7 +89,7 @@ export function SiteFooter() {
         <div>
           <p className="mb-4 text-sm font-semibold text-foreground">Contact</p>
           <div className="space-y-5">
-            <ContactEmailLinks />
+            <ContactEmailLinks emails={["operation@bpo.hopevalley.digital"]} />
             <ContactPhoneLinks showWhatsapp={false} />
             <ContactAddress />
           </div>
@@ -98,7 +98,7 @@ export function SiteFooter() {
 
       <div className="border-t border-border">
         <div className="container-x flex flex-col items-center justify-between gap-4 py-6 text-xs text-muted-foreground md:flex-row">
-          <p>&copy; {new Date().getFullYear()} hopeValley BPO. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} HopeValley Digital. All rights reserved.</p>
           <div className="flex gap-6">
             <Link to="/privacy-policy" className="hover:text-foreground">
               Privacy Policy
