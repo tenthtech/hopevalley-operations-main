@@ -72,6 +72,7 @@ export function SiteFooter() {
             { to: "/pilot-program", label: "Pilot Program" },
             { to: "/faqs", label: "FAQs" },
             { to: "/blog", label: "Blog" },
+            { to: "/about-us", label: "About Us" },
             { to: "/contact", label: "Contact" },
           ]}
         />

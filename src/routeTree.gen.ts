@@ -23,6 +23,7 @@ import { Route as BookDiscoveryRouteImport } from './routes/book-discovery'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as BackOfficeOperationsRouteImport } from './routes/back-office-operations'
 import { Route as AiHumanSupportRouteImport } from './routes/ai-human-support'
+import { Route as AboutUsRouteImport } from './routes/about-us'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
@@ -98,6 +99,11 @@ const AiHumanSupportRoute = AiHumanSupportRouteImport.update({
   path: '/ai-human-support',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutUsRoute = AboutUsRouteImport.update({
+  id: '/about-us',
+  path: '/about-us',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -122,6 +128,7 @@ const ApiContactRoute = ApiContactRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/about-us': typeof AboutUsRoute
   '/ai-human-support': typeof AiHumanSupportRoute
   '/back-office-operations': typeof BackOfficeOperationsRoute
   '/blog': typeof BlogRouteWithChildren
@@ -142,6 +149,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/about-us': typeof AboutUsRoute
   '/ai-human-support': typeof AiHumanSupportRoute
   '/back-office-operations': typeof BackOfficeOperationsRoute
   '/blog': typeof BlogRouteWithChildren
@@ -163,6 +171,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/about-us': typeof AboutUsRoute
   '/ai-human-support': typeof AiHumanSupportRoute
   '/back-office-operations': typeof BackOfficeOperationsRoute
   '/blog': typeof BlogRouteWithChildren
@@ -185,6 +194,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/about-us'
     | '/ai-human-support'
     | '/back-office-operations'
     | '/blog'
@@ -205,6 +215,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/about-us'
     | '/ai-human-support'
     | '/back-office-operations'
     | '/blog'
@@ -225,6 +236,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/about-us'
     | '/ai-human-support'
     | '/back-office-operations'
     | '/blog'
@@ -246,6 +258,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AboutUsRoute: typeof AboutUsRoute
   AiHumanSupportRoute: typeof AiHumanSupportRoute
   BackOfficeOperationsRoute: typeof BackOfficeOperationsRoute
   BlogRoute: typeof BlogRouteWithChildren
@@ -363,6 +376,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AiHumanSupportRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about-us': {
+      id: '/about-us'
+      path: '/about-us'
+      fullPath: '/about-us'
+      preLoaderRoute: typeof AboutUsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -407,6 +427,7 @@ const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AboutUsRoute: AboutUsRoute,
   AiHumanSupportRoute: AiHumanSupportRoute,
   BackOfficeOperationsRoute: BackOfficeOperationsRoute,
   BlogRoute: BlogRouteWithChildren,

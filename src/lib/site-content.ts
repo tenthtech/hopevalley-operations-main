@@ -4,9 +4,9 @@ export const CONTACT_EMAILS = [
 ] as const;
 
 export const CONTACT_PHONE = {
-  label: "+358 46 623 2127",
-  tel: "+358466232127",
-  whatsapp: "https://wa.me/358466232127",
+  label: "+358 46 579 5294",
+  tel: "+358465795294",
+  whatsapp: "https://wa.me/358465795294",
 } as const;
 
 export const CONTACT_ADDRESS = {

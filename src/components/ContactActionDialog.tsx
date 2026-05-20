@@ -47,7 +47,9 @@ export function ContactActionDialog({ children }: ContactActionDialogProps) {
             <MessageCircle className="h-5 w-5 shrink-0 text-primary" aria-hidden />
             <span className="grid min-w-0 gap-1">
               <span>WhatsApp</span>
-              <span className="break-all text-xs font-normal text-soft">wa.me/358466232127</span>
+              <span className="break-all text-xs font-normal text-soft">
+                {CONTACT_PHONE.whatsapp.replace("https://", "")}
+              </span>
             </span>
           </a>
         </div>
